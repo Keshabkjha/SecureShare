@@ -1,0 +1,215 @@
+{
+  "info": {
+    "name": "Secure File Sharing API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"testpass123\",\n    \"password2\": \"testpass123\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"user_type\": \"CLIENT\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"testpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login", ""]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "refresh", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload File (Ops Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/your/file.docx"
+                },
+                {
+                  "key": "description",
+                  "value": "Test file upload",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/files/upload/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "files", "upload", ""]
+            }
+          }
+        },
+        {
+          "name": "List Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/files/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "files", ""],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Download URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/files/{{file_id}}/download/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "files", "{{file_id}}", "download", ""]
+            }
+          }
+        },
+        {
+          "name": "Share File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"file\": \"{{file_id}}\",\n    \"expires_at\": \"2025-12-31T23:59:59Z\",\n    \"max_downloads\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/files/shares/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "files", "shares", ""]
+            }
+          }
+        },
+        {
+          "name": "Download Shared File",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/files/shares/{{share_token}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "files", "shares", "{{share_token}}", ""]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "access_token",
+      "value": "your_access_token_here"
+    },
+    {
+      "key": "refresh_token",
+      "value": "your_refresh_token_here"
+    },
+    {
+      "key": "file_id",
+      "value": "your_file_id_here"
+    },
+    {
+      "key": "share_token",
+      "value": "your_share_token_here"
+    }
+  ]
+}

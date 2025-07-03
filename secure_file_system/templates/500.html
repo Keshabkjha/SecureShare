@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error | SecureShare</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #EF4444 0%, #F59E0B 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 text-center">
+            <div>
+                <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+                <h2 class="mt-6 text-5xl font-extrabold text-gray-900 gradient-text">
+                    500
+                </h2>
+                <p class="mt-2 text-2xl font-medium text-gray-900">
+                    Something went wrong
+                </p>
+                <p class="mt-2 text-sm text-gray-600">
+                    We're working on fixing the issue. Please try again later.
+                </p>
+            </div>
+            <div class="mt-8">
+                <a href="/" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Return to Homepage
+                </a>
+            </div>
+            <div class="mt-6 text-sm text-gray-500">
+                <p>If the problem persists, please contact our support team.</p>
+                <div class="mt-2">
+                    <a href="mailto:support@secureshare.com" class="text-red-600 hover:text-red-500">
+                        <i class="fas fa-envelope mr-1"></i> support@secureshare.com
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin/js/jquery.init.js' %}"></script>
+<script src="{% static 'admin/js/change_form.js' %}"></script>
+<script>
+    // Add any custom JavaScript for the change form here
+    (function($) {
+        'use strict';
+        
+        $(document).ready(function() {
+            // Add custom classes to form elements for better styling
+            $('input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], textarea, select')
+                .addClass('form-control');
+                
+            // Style the save buttons
+            $('.submit-row input[type=submit]').addClass('btn btn-primary');
+            $('.submit-row input[type=submit].default').addClass('btn-success');
+            
+            // Add help text icons
+            $('.help').each(function() {
+                $(this).addClass('text-muted small d-block mt-1');
+            });
+            
+            // Add card styling to fieldset
+            $('fieldset.module').addClass('card mb-4');
+            $('fieldset.module h2').addClass('card-header');
+            $('fieldset.module .form-row').addClass('card-body');
+        });
+    })(django.jQuery);
+</script>
+{% endblock %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+    <fieldset class="module aligned {{ fieldset.classes }}">
+        {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+        {% if fieldset.description %}
+            <div class="description">{{ fieldset.description|safe }}</div>
+        {% endif %}
+        {% for line in fieldset %}
+            <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                {% if line.fields|length_is:'1' %}
+                    {{ line.errors }}
+                {% endif %}
+                {% for field in line %}
+                    <div {% if not line.fields|length_is:'1' %} 
+                            class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}
+                                {% if not field.is_readonly and field.errors %} errors{% endif %}
+                                {% if field.field.is_hidden %} hidden{% endif %}"
+                        {% elif field.is_checkbox %} 
+                            class="checkbox-row"
+                        {% else %}
+                            class="field"
+                        {% endif %}>
+                        {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                            {{ field.errors }}
+                        {% endif %}
+                        {% if field.is_checkbox %}
+                            {{ field.field }}{{ field.label_tag }}
+                        {% else %}
+                            {{ field.label_tag }}
+                            {% if field.is_readonly %}
+                                <div class="readonly">{{ field.contents }}</div>
+                            {% else %}
+                                {{ field.field }}
+                            {% endif %}
+                        {% endif %}
+                        {% if field.field.help_text %}
+                            <div class="help">{{ field.field.help_text|safe }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </fieldset>
+{% endfor %}
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+<div class="submit-row">
+    {% if show_save %}
+        <input type="submit" value="{% trans 'Save' %}" class="default" name="_save">
+    {% endif %}
+    {% if show_save_as_new %}
+        <input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew">
+    {% endif %}
+    {% if show_save_and_add_another %}
+        <input type="submit" value="{% trans 'Save and add another' %}" name="_addanother">
+    {% endif %}
+    {% if show_save_and_continue %}
+        <input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue">
+    {% endif %}
+    {% if show_delete_link and original %}
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <p class="deletelink-box">
+            <a href="{% add_preserved_filters delete_url %}" class="deletelink">
+                {% trans "Delete" %}
+            </a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

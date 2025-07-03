@@ -1,0 +1,155 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    :root {
+        --primary: #4F46E5;
+        --primary-hover: #4338CA;
+        --secondary: #6B7280;
+        --success: #10B981;
+        --danger: #EF4444;
+        --warning: #F59E0B;
+        --info: #3B82F6;
+        --light: #F9FAFB;
+        --dark: #1F2937;
+    }
+
+    /* Header */
+    #header {
+        background: var(--primary);
+        color: white;
+    }
+
+    #branding h1 {
+        color: white;
+        font-weight: 600;
+    }
+
+    /* Navigation */
+    #user-tools {
+        color: white;
+    }
+
+    #user-tools a:link, #user-tools a:visited {
+        color: #E5E7EB;
+    }
+
+    #user-tools a:focus, #user-tools a:hover {
+        color: white;
+        text-decoration: underline;
+    }
+
+    /* Buttons */
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 15px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+        background: var(--primary-hover);
+        color: white;
+    }
+
+    .button.default, input[type=submit].default, .submit-row input.default {
+        background: var(--success);
+    }
+
+    .button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+        background: #0D9E6E;
+    }
+
+    /* Tables */
+    #changelist table thead th {
+        background: #F3F4F6;
+        color: var(--dark);
+        font-weight: 600;
+    }
+
+    #changelist table tbody tr:hover {
+        background-color: #F9FAFB;
+    }
+
+    /* Forms */
+    .form-row {
+        border-bottom: 1px solid #E5E7EB;
+        padding: 15px 0;
+    }
+
+    .form-row:last-child {
+        border-bottom: none;
+    }
+
+    /* Sidebar */
+    #content-related {
+        background: #F9FAFB;
+        border-left: 1px solid #E5E7EB;
+    }
+
+    /* Dashboard */
+    .dashboard #content {
+        width: 100%;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        #content-related {
+            float: none;
+            width: 100%;
+            margin-top: 20px;
+            border-left: none;
+            border-top: 1px solid #E5E7EB;
+        }
+    }
+
+    /* Custom styles */
+    .version-info {
+        background: #F3F4F6;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        font-size: 12px;
+        color: var(--secondary);
+    }
+
+    .version-info strong {
+        color: var(--dark);
+    }
+
+    /* Icons */
+    .icon {
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center;">
+        <i class="fas fa-shield-alt" style="margin-right: 10px;"></i>
+        {{ site_header|default:_('Django administration') }}
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+{% endblock %}
+
+{% block footer %}
+<div id="footer" class="footer">
+    <div class="version-info">
+        <strong>Secure File System</strong> v{{ version }}
+        <br>
+        <small>© {% now "Y" %} SecureShare. All rights reserved.</small>
+    </div>
+</div>
+{% endblock %}

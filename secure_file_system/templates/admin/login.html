@@ -1,0 +1,211 @@
+{% extends "admin/login.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    :root {
+        --primary: #4F46E5;
+        --primary-hover: #4338CA;
+        --light: #F9FAFB;
+        --dark: #1F2937;
+    }
+
+    body {
+        background: #F3F4F6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    #header {
+        background: var(--primary);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+    }
+
+    #branding h1 {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    #content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 100%;
+        max-width: 400px;
+        margin: 2rem;
+        overflow: hidden;
+    }
+
+    #content-main {
+        padding: 2rem;
+    }
+
+    .form-row {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark);
+    }
+
+    .form-row input[type="text"],
+    .form-row input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #E5E7EB;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-row input[type="text"]:focus,
+    .form-row input[type="password"]:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .submit-row {
+        margin-top: 2rem;
+        text-align: right;
+    }
+
+    .submit-row input[type="submit"] {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .submit-row input[type="submit"]:hover {
+        background: var(--primary-hover);
+    }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #E5E7EB;
+        color: #6B7280;
+        font-size: 0.875rem;
+    }
+
+    .login-footer a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .login-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .errornote {
+        background: #FEE2E2;
+        color: #B91C1C;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+        border-left: 4px solid #DC2626;
+    }
+
+    @media (max-width: 480px) {
+        #content {
+            margin: 1rem;
+        }
+        
+        #content-main {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+        {% if form.errors.items|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+    </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="errornote">
+            {{ error }}
+        </p>
+        {% endfor %}
+    {% endif %}
+
+    <form action="{{ app_path }}" method="post" id="login-form">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}" class="required">{{ form.username.label }}:</label>
+            {{ form.username }}
+        </div>
+        <div class="form-row">
+            {{ form.password.errors }}
+            <label for="{{ form.password.id_for_label }}" class="required">{{ form.password.label }}:</label>
+            {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+        {% url 'admin_password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+        <div class="password-reset-link">
+            <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
+        </div>
+        {% endif %}
+        <div class="submit-row">
+            <input type="submit" value="{% translate 'Log in' %}">
+        </div>
+    </form>
+    
+    <div class="login-footer">
+        <p>Secure File System &copy; {% now "Y" %}</p>
+        <p>Version {{ version|default:"1.0.0" }}</p>
+    </div>
+</div>
+
+<script>
+    // Add autofocus to the username field
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('id_username').focus();
+        
+        // Add floating label effect
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+        inputs.forEach(input => {
+            // Add/remove filled class when input has value
+            input.addEventListener('change', function() {
+                if (this.value) {
+                    this.classList.add('filled');
+                } else {
+                    this.classList.remove('filled');
+                }
+            });
+            
+            // Trigger change event on page load in case of autofill
+            if (input.value) {
+                input.classList.add('filled');
+            }
+        });
+    });
+</script>
+{% endblock %}

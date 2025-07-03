@@ -1,0 +1,113 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<!-- Custom Admin CSS -->
+<link rel="stylesheet" href="{% static 'admin/css/custom.css' %}">
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Additional inline styles can go here */
+    :root {
+        --primary: #4F46E5;
+        --primary-hover: #4338CA;
+        --primary-light: #EEF2FF;
+        --secondary: #6B7280;
+        --success: #10B981;
+        --success-hover: #0D9E6E;
+        --danger: #EF4444;
+        --danger-hover: #DC2626;
+        --warning: #F59E0B;
+        --warning-hover: #D97706;
+        --info: #3B82F6;
+        --light: #F9FAFB;
+        --dark: #1F2937;
+        --border: #E5E7EB;
+    }
+
+    /* Fix for the header */
+    #header {
+        background: white !important;
+        color: var(--dark) !important;
+    }
+
+    #branding h1 {
+        color: var(--primary) !important;
+    }
+
+    /* Fix for the sidebar */
+    #nav-sidebar {
+        background-color: white !important;
+    }
+
+    /* Fix for buttons */
+    .button, input[type=submit], input[type=button] {
+        background: var(--primary) !important;
+        color: white !important;
+        border-radius: 4px !important;
+        padding: 6px 12px !important;
+    }
+
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: var(--primary-hover) !important;
+    }
+
+    /* Fix for forms */
+    input[type=text], 
+    input[type=password], 
+    input[type=email], 
+    input[type=url], 
+    input[type=number], 
+    textarea, 
+    select {
+        border: 1px solid #D1D5DB !important;
+        border-radius: 4px !important;
+        padding: 6px 12px !important;
+    }
+
+    /* Fix for tables */
+    #result_list thead th {
+        background: #F9FAFB !important;
+        color: var(--dark) !important;
+    }
+
+    /* Responsive fixes */
+    @media (max-width: 1024px) {
+        #content {
+            margin-left: 0 !important;
+        }
+
+        #nav-sidebar {
+            margin-left: -250px;
+        }
+
+        #nav-sidebar.visible {
+            margin-left: 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center;">
+        <i class="fas fa-shield-alt" style="margin-right: 10px;"></i>
+        {{ site_header|default:_('Django administration') }}
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}
+<div id="footer" class="footer">
+    <div class="version-info">
+        <strong>Secure File System</strong> v{{ version }}
+        <br>
+        <small>© {% now "Y" %} SecureShare. All rights reserved.</small>
+    </div>
+</div>
+{% endblock %}
