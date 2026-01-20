@@ -212,13 +212,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-static_dir = os.path.join(BASE_DIR, 'static')
-if not os.path.exists(static_dir):
-    static_dir = os.path.join(BASE_DIR.parent, 'static')
-if os.path.exists(static_dir):
-    STATICFILES_DIRS = [static_dir]
-else:
-    STATICFILES_DIRS = []
+static_candidates = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR.parent, 'static'),
+]
+STATICFILES_DIRS = [path for path in static_candidates if os.path.exists(path)]
 
 # Custom admin settings
 ADMIN_SITE_HEADER = f"{SITE_NAME} Admin"
