@@ -73,7 +73,7 @@ urlpatterns = [
     # API Documentation
     path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/schema/', schema_view, name='openapi-schema'),
+    path('api/schema/', schema_view.without_ui(cache_timeout=0), name='openapi-schema'),
     
     # API Version 1
     path('api/v1/', include(api_urls)),
