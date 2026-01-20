@@ -26,5 +26,4 @@ urlpatterns = [
     
     # Token management
     path('logout/', views.LogoutView.as_view(), name='logout'),
-    path('refresh/', views.RefreshTokenView.as_view(), name='refresh_token'),
 ]
