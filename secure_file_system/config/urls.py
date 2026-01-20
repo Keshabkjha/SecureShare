@@ -78,9 +78,6 @@ urlpatterns = [
     # API Version 1
     path('api/v1/', include(api_urls)),
     
-    # JWT Token Refresh
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
     # Health check endpoint
     path('health/', include('health_check.urls')),
 ]
