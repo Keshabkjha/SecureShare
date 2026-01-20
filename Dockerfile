@@ -15,13 +15,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements.txt .
+COPY secure_file_system/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . .
 
 # Collect static files
+WORKDIR /app/secure_file_system
 RUN python manage.py collectstatic --noinput
 
 # Run the application
