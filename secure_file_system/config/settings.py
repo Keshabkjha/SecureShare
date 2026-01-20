@@ -213,8 +213,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 static_dir = BASE_DIR.parent / 'static'
-STATICFILES_DIRS = [static_dir]
-if not static_dir.exists():
+if static_dir.exists():
+    STATICFILES_DIRS = [static_dir]
+else:
     STATICFILES_DIRS = []
 
 # Custom admin settings
