@@ -212,8 +212,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-static_dir = BASE_DIR.parent / 'static'
-if static_dir.exists():
+static_dir = os.path.join(BASE_DIR, 'static')
+if not os.path.exists(static_dir):
+    static_dir = os.path.join(BASE_DIR.parent, 'static')
+if os.path.exists(static_dir):
     STATICFILES_DIRS = [static_dir]
 else:
     STATICFILES_DIRS = []
